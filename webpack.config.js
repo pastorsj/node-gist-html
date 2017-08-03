@@ -6,7 +6,7 @@ const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'node-fred';
+let libraryName = 'node-gist-html';
 
 let plugins = [], outputFile;
 
@@ -38,12 +38,16 @@ const config = {
                 test: /(\.jsx|\.js)$/,
                 loader: 'eslint-loader',
                 exclude: /node_modules/
+            },
+            { 
+                test: /\.tsx?$/,
+                loader: 'ts-loader'
             }
         ]
     },
     resolve: {
         modules: [path.resolve('./src')],
-        extensions: ['.json', '.js']
+        extensions: ['.json', '.js', '.ts', '.tsx']
     },
     plugins: plugins,
     externals: {
