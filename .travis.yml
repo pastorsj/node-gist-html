@@ -11,11 +11,11 @@ before_deploy:
 - npm run build
 deploy:
   provider: npm
-    email: sampastoriza@yahoo.com
-    skip_cleanup: true
-    api_key:
-      secure: S3J2EFYv0tZbs4HKs4rvm7bZAZCEeDTzk0bLiaPfg4yHVA5+0tAIGhiNYWJCE8eViXvn6oQV6qSP9MQtDWCpSB8PvxzVL+2i3dsyurVjITBkGq45hoj5vVjEGAGbE6qVHa8cKubR/MByD5yy6SBUg/5aPPSYxts0z0YoYon+mMMYks0cYvSAB+vxwHEoOkKVsv1mn0sQMgqVzbOQIi3LIW9O9iHyeD/HmjftnaeS33NGmgvvEf8op7TV39v17Wtt6jFwvb/iaqvtBM2H/27WbXn18bbjTodJZCukpsdYHob8J1rEjKzWbESAA/eGi6HjSlO4y3Vly2wdODEQjNzC6C5TvvHBYVWR4vG0Co8FfRoEKh7UyjkxeL7lvNcWxbhgkGy+VIXSK4uImAX6PydRiOx3rBJ/osBr91DCYIae9gX6BB+sWk68t8fEkjdCTJJW0m0y7u0KpQ+X1AhnWhJV31/63WQT3e/u5JlZ44zLsDzJQSWBCjMjrXkOOL1C1O8jD/M4Kf6AOmTuwruUbzPOu7cG29Di+P5kJIdOSq0VKxAaFTPfUfDLs5Zz+qWtuyfXJxxRSS9rktUExezSfRTi+FUfL4+BWzeTtchu75KlQLcM2OZQjrtbNtMcp62ph7/beWpVoOEWbzp8WuHE8Q42sOad5Fv5eT1+tDzC2IebnTA=
-    on:
-      branch: master
-      tags: true
+  email: sampastoriza@yahoo.com
+  skip_cleanup: true
+  api_key:
+    secure: S3J2EFYv0tZbs4HKs4rvm7bZAZCEeDTzk0bLiaPfg4yHVA5+0tAIGhiNYWJCE8eViXvn6oQV6qSP9MQtDWCpSB8PvxzVL+2i3dsyurVjITBkGq45hoj5vVjEGAGbE6qVHa8cKubR/MByD5yy6SBUg/5aPPSYxts0z0YoYon+mMMYks0cYvSAB+vxwHEoOkKVsv1mn0sQMgqVzbOQIi3LIW9O9iHyeD/HmjftnaeS33NGmgvvEf8op7TV39v17Wtt6jFwvb/iaqvtBM2H/27WbXn18bbjTodJZCukpsdYHob8J1rEjKzWbESAA/eGi6HjSlO4y3Vly2wdODEQjNzC6C5TvvHBYVWR4vG0Co8FfRoEKh7UyjkxeL7lvNcWxbhgkGy+VIXSK4uImAX6PydRiOx3rBJ/osBr91DCYIae9gX6BB+sWk68t8fEkjdCTJJW0m0y7u0KpQ+X1AhnWhJV31/63WQT3e/u5JlZ44zLsDzJQSWBCjMjrXkOOL1C1O8jD/M4Kf6AOmTuwruUbzPOu7cG29Di+P5kJIdOSq0VKxAaFTPfUfDLs5Zz+qWtuyfXJxxRSS9rktUExezSfRTi+FUfL4+BWzeTtchu75KlQLcM2OZQjrtbNtMcp62ph7/beWpVoOEWbzp8WuHE8Q42sOad5Fv5eT1+tDzC2IebnTA=
+  on:
+    branch: master
+    tags: true
     
