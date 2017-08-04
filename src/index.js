@@ -100,8 +100,8 @@ export function gistify(type, options) {
                 if (err) {
                     reject('An error has occured', err);
                 }
-                if (resp.data) {
-                    retrieveGist(resp.data)
+                if (body) {
+                    retrieveGist(JSON.parse(body))
                         .then((response) => resolve(response))
                         .catch((err) => reject(err));
                 } else {
