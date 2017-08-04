@@ -1,6 +1,6 @@
 'use strict';
 
-const html = require('../lib/node-gist-html');
+const html = require('../lib/node-gist-html.min');
 const fs = require('fs');
 
 // html.gistify('gist', {
