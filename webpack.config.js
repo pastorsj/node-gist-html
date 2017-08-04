@@ -39,7 +39,7 @@ const config = {
                 loader: 'eslint-loader',
                 exclude: /node_modules/
             },
-            { 
+            {
                 test: /\.tsx?$/,
                 loader: 'ts-loader'
             }
@@ -51,7 +51,6 @@ const config = {
     },
     plugins: plugins,
     externals: {
-        axios: 'axios',
         request: 'request',
         cheerio: 'cheerio',
         lodash: {

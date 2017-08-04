@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/pastorsj/node-gist-html#readme",
   "dependencies": {
-    "axios": "^0.16.2",
     "cheerio": "^1.0.0-rc.2",
     "request": "^2.81.0"
   },
