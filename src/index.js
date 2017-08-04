@@ -2,6 +2,7 @@
 
 import request from 'request';
 import cheerio from 'cheerio';
+import { minify } from 'html-minifier';
 
 function retrieveGist(response) {
     return new Promise((resolve, reject) => {
@@ -28,9 +29,15 @@ function retrieveGist(response) {
             const stylesheet = `<link rel=stylesheet type=text/css href=${response.stylesheet}>`;
 
             resolve({
-                html: stylesheet + '\n' + response.div,
-                file: response.div,
-                stylesheet
+                html: minify(stylesheet + '\n' + response.div, {
+                    conservativeCollapse: true
+                }),
+                file: minify(response.div, {
+                    conservativeCollapse: true
+                }),
+                stylesheet: minify(stylesheet, {
+                    conservativeCollapse: true
+                })
             });
         } else {
             reject('Failed loading gist');
@@ -66,9 +73,15 @@ function convertGithubCode(body, url, filename) {
             file = `<div class="gist"><div class="file">${file}${meta}</div></div>`;
 
             resolve({
-                styles,
-                file,
-                html: styles + file
+                styles: minify(styles, {
+                    conservativeCollapse: true
+                }),
+                file: minify(file, {
+                    conservativeCollapse: true
+                }),
+                html: minify(styles + file, {
+                    conservativeCollapse: true
+                })
             });
         } catch(e) {
             reject(e);

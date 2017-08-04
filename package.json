@@ -27,6 +27,7 @@
   "homepage": "https://github.com/pastorsj/node-gist-html#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "html-minifier": "^3.5.3",
     "request": "^2.81.0"
   },
   "devDependencies": {

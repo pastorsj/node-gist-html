@@ -53,6 +53,7 @@ const config = {
     externals: {
         request: 'request',
         cheerio: 'cheerio',
+        'html-minifier': 'html-minifier',
         lodash: {
             commonjs: 'lodash',
             commonjs2: 'lodash',
