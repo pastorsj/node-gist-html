@@ -1,4 +1,4 @@
-# node-gist-html
+# node-gist-html [![Build Status](https://travis-ci.org/pastorsj/node-gist-html.svg?branch=master)](https://travis-ci.org/pastorsj/node-gist-html)
 A simple library to convert gist code and GitHub files into gist-like html
 
 ## Author
