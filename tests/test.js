@@ -1,9 +1,10 @@
 'use strict';
 
 const html = require('../lib/node-gist-html');
+const fs = require('fs');
 
 html.gistify('github', {
-    url: 'https://github.com/LighthouseBlog/Blog/blob/master/src/main.ts'
+    url: 'https://github.com/pastorsj/node-gist-html/blob/master/tests/index.html'
 }).then((result) => {
-    console.log('Result', result.html);
+    fs.writeFileSync('index.html', result.html);
 });
