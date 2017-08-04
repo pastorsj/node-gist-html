@@ -1,9 +1,7 @@
 'use strict';
-// import api from './api';
-import request from 'request';
 
+import request from 'request';
 import cheerio from 'cheerio';
-// <script src="https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794.js"></script>
 
 function retrieveGist(response) {
     return new Promise((resolve, reject) => {
@@ -47,7 +45,7 @@ function convertGithubCode(body, url, filename) {
             let styles = '';
             let rawURL = $('#raw-url').attr('href');
 
-            rawURL = 'https://raw.githubusercontent.com' + rawURL;
+            rawURL = 'https://raw.githubusercontent.com' + rawURL.replace('/raw', '');;
             $('.file-header').remove();
             let file = $('.file').html();
 
@@ -114,5 +112,4 @@ export function gistify(type, options) {
             reject('Type not supported yet: ', type);
         }
     });
-    // Parse url to determine whether the url is valid and needs to be converted as a github link or gist link.
 }
