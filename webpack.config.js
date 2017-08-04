@@ -52,6 +52,8 @@ const config = {
     plugins: plugins,
     externals: {
         axios: 'axios',
+        request: 'request',
+        cheerio: 'cheerio',
         lodash: {
             commonjs: 'lodash',
             commonjs2: 'lodash',

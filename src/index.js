@@ -1,6 +1,8 @@
 'use strict';
-import request from './api';
+// import api from './api';
+import request from 'request';
 
+import cheerio from 'cheerio';
 // <script src="https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794.js"></script>
 
 function retrieveGist(response) {
@@ -42,28 +44,48 @@ export function gistify(type, options) {
     return new Promise((resolve, reject) => {
         if (type === 'github') {
             // It is a github link
+            const url = options.url;
+
+            request(url, (err, resp, body) => {
+                if (err) {
+                    reject(err);
+                }
+                const $ = cheerio.load(body);
+                let file = $('.file').html();
+
+                $('link[rel=stylesheet]').each((index, element) => {
+                    console.log('html', $(this).html());
+                });
+                // const sheets = $('link[rel=stylesheet]').each().html();
+
+                // console.log('sheets', sheets);
+
+                if (file) {
+                    file = cheerio.load(file);
+                    // console.log('html', file.html());
+                }
+            });
         } else if (type === 'gist') {
             // It is a gist link
             const id = options.id;
             const url = 'https://gist.github.com/' + id + '.json';
 
-            request.get(url)
-                .then((result) => {
-                    if (result.data) {
-                        retrieveGist(result.data)
-                            .then((response) => {
-                                resolve(response);
-                            })
-                            .catch((err) => {
-                                reject(err);
-                            });
-                    } else {
-                        reject('Failed to load the gist');
-                    }
-                })
-                .catch((err) => {
+            request(url, (err, resp, body) => {
+                if (err) {
                     reject('An error has occured', err);
-                });
+                }
+                if (resp.data) {
+                    retrieveGist(resp.data)
+                        .then((response) => {
+                            resolve(response);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                } else {
+                    reject('Failed to load the gist');
+                }
+            });
         } else {
             reject('Type not supported yet: ', type);
         }
