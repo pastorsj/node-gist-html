@@ -31,7 +31,7 @@ function retrieveGist(response) {
 
             resolve({
                 html: stylesheet + '\n' + response.div,
-                div: response.div,
+                file: response.div,
                 stylesheet
             });
         } else {
@@ -51,19 +51,22 @@ export function gistify(type, options) {
                     reject(err);
                 }
                 const $ = cheerio.load(body);
+
+                $('.file-header').remove();
                 let file = $('.file').html();
+                let styles = '';
 
-                $('link[rel=stylesheet]').each((index, element) => {
-                    console.log('html', $(this).html());
+                $('link[rel=stylesheet]').each(function (index, element) {
+                    const href = $(this).attr('href');
+
+                    styles += `<link rel=stylesheet type=text/css href=${href}>`;
                 });
-                // const sheets = $('link[rel=stylesheet]').each().html();
 
-                // console.log('sheets', sheets);
-
-                if (file) {
-                    file = cheerio.load(file);
-                    // console.log('html', file.html());
-                }
+                resolve({
+                    styles,
+                    file,
+                    html: styles + file
+                });
             });
         } else if (type === 'gist') {
             // It is a gist link
