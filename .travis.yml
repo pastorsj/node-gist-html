@@ -1,9 +1,6 @@
 language: node_js
 node_js:
 - 5.0.0
-- 6.0.0
-- 7.0.0
-- 8.0.0
 sudo: false
 install:
 - npm install
@@ -14,8 +11,7 @@ deploy:
   email: sampastoriza@yahoo.com
   skip_cleanup: true
   api_key:
-    secure: S3J2EFYv0tZbs4HKs4rvm7bZAZCEeDTzk0bLiaPfg4yHVA5+0tAIGhiNYWJCE8eViXvn6oQV6qSP9MQtDWCpSB8PvxzVL+2i3dsyurVjITBkGq45hoj5vVjEGAGbE6qVHa8cKubR/MByD5yy6SBUg/5aPPSYxts0z0YoYon+mMMYks0cYvSAB+vxwHEoOkKVsv1mn0sQMgqVzbOQIi3LIW9O9iHyeD/HmjftnaeS33NGmgvvEf8op7TV39v17Wtt6jFwvb/iaqvtBM2H/27WbXn18bbjTodJZCukpsdYHob8J1rEjKzWbESAA/eGi6HjSlO4y3Vly2wdODEQjNzC6C5TvvHBYVWR4vG0Co8FfRoEKh7UyjkxeL7lvNcWxbhgkGy+VIXSK4uImAX6PydRiOx3rBJ/osBr91DCYIae9gX6BB+sWk68t8fEkjdCTJJW0m0y7u0KpQ+X1AhnWhJV31/63WQT3e/u5JlZ44zLsDzJQSWBCjMjrXkOOL1C1O8jD/M4Kf6AOmTuwruUbzPOu7cG29Di+P5kJIdOSq0VKxAaFTPfUfDLs5Zz+qWtuyfXJxxRSS9rktUExezSfRTi+FUfL4+BWzeTtchu75KlQLcM2OZQjrtbNtMcp62ph7/beWpVoOEWbzp8WuHE8Q42sOad5Fv5eT1+tDzC2IebnTA=
+    secure: YqIhmDFPaWZnMsKEOC4T0YMjtT4yXf2sVGtbWCctkO5NY+MEWx0xOtYAA0RQ6CAu4XATu69+E1tUfF4noIeS0hPCHFFHgToHeesGaWU1T9xcJAMw8LwUgqkR37GYTvXJweUE/SNhErPIeRX+P3ipq8pVzOwH6Tqy2vRmSyK8shkoKnCdkWjPUTSfAvY5MnoTBva2PYwcCMDIVjnq/mOd19RtDUPYMYYJ8GXy8yejs2G8hVq8q5pV2L1mu/aNeK7USxA0q+t85CyBIPKBRAOAihxTqanGiC/ZMs1tHUCR38A1sc6phVVXdHm6vS9Ykd0qqX057Fh5EXkgCHG6RtEU4cyiUuShMFMDGQdCo4yPs7xezjPth3U7+Sq35gu6YN1Rvo5z58+MKE74QZQs6hIwWAeeWZr8s1xVRJLf7f5rkWD7vBzNc9uTYqKR81hWfpFVwXOBac2Mu7bl7kE2SrrSzA5UYUvr+CxzluxiGWk5HNIRGeVoOWGBGqp15R80EoDxdCXXo5beXv76+d77a6mtEHPuEVXskn8iIsjn1at2xOi/OwYC4QiOUfAvhjoca0xhdnT5v4zMJ6O+avBIC+csn2tDmvS9gG+9LnDqG0BAtABqjj9+rJqklj3GD+H+gICXP6lsHBPehUPuPel/dbb9sJh7+rx8wwDzJDgqRJfdJpo=
   on:
     branch: master
     tags: true
-    
