@@ -60,7 +60,7 @@ function convertGithubCode(body, url, filename) {
                 const href = $(this).attr('href');
 
                 if (href.indexOf('frameworks-') === -1) {
-                    styles += `<link rel=stylesheet type=text/css href=${href}>`;
+                    styles += $.html(this);
                 }
             });
             styles = styles + '<link rel=stylesheet type=text/css href=https://assets-cdn.github.com/assets/gist-embed-40aceec172c5b3cf62f5333920ddab3a7342a1d12dfdd1581f49f0f35fc0de4a.css>'; // eslint-disable-line
