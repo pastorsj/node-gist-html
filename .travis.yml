@@ -6,6 +6,7 @@ install:
 - npm install
 before_deploy:
 - npm run build
+- npm run build-types
 deploy:
   provider: npm
   email: sampastoriza@yahoo.com

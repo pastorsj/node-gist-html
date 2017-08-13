@@ -2,12 +2,14 @@
   "name": "node-gist-html",
   "version": "1.0.5",
   "description": "A simple library to convert gist code and GitHub files into gist-like html",
-  "main": "lib/node-gist-html.min.js",
+  "main": "./lib/node-gist-html.min.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --compilers js:babel-core/register --colors --timeout 5000 ./tests/**/*.test.js",
-    "test:watch": "mocha --compilers js:babel-core/register --colors --timeout 5000 -w ./tests/**/*.test.js"
+    "test:watch": "mocha --compilers js:babel-core/register --colors --timeout 5000 -w ./tests/**/*.test.js",
+    "build-types": "dtsmake -s ./src/index.js --dist ./lib/node-gist-html"
   },
   "repository": {
     "type": "git",
@@ -37,11 +39,13 @@
     "babel-plugin-add-module-exports": "^0.1.4",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^3.5.0",
+    "dtsmake": "0.0.10",
     "eslint": "^3.15.0",
     "eslint-loader": "1.6.1",
     "mocha": "^3.5.0",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.12.0",
+    "tern": "^0.21.0",
     "ts-loader": "^2.3.2",
     "typescript": "^2.4.2",
     "webpack": "2.2.1",
