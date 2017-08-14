@@ -1,6 +1,6 @@
 'use strict';
 
-const html = require('../lib/node-gist-html.min');
+const gistify = require('../lib/node-gist-html.min');
 const fs = require('fs');
 
 // html.gistify('gist', {
@@ -9,7 +9,7 @@ const fs = require('fs');
 //     fs.writeFileSync('index.html', result.html);
 // });
 
-html.gistify('github', {
+gistify('github', {
     url: 'https://github.com/staltz/react-native-node/blob/master/android/build.gradle'
 }).then((result) => {
     fs.writeFileSync('index.html', result.html);

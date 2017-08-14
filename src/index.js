@@ -89,11 +89,11 @@ function convertGithubCode(body, url, filename) {
     });
 }
 
-export function gistify(type, options) {
+export default function gistify(type, link) {
     return new Promise((resolve, reject) => {
         if (type === 'github') {
             // It is a github link
-            const url = options.url;
+            const url = link;
             const filename = url.split('/').pop();
 
             request(url, (err, resp, body) => {
@@ -105,8 +105,8 @@ export function gistify(type, options) {
                     .catch((err) => reject(err));
             });
         } else if (type === 'gist') {
-            // It is a gist link
-            const id = options.id;
+            // It is a gist id
+            const id = link;
             const url = 'https://gist.github.com/' + id + '.json';
 
             request(url, (err, resp, body) => {
