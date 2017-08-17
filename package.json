@@ -1,9 +1,9 @@
 {
   "name": "node-gist-html",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A simple library to convert gist code and GitHub files into gist-like html",
   "main": "./lib/node-gist-html.min.js",
-  "types": "./lib/index.d.ts",
+  "types": "./index.d.ts",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
