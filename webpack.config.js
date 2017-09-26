@@ -38,16 +38,12 @@ const config = {
                 test: /(\.jsx|\.js)$/,
                 loader: 'eslint-loader',
                 exclude: /node_modules/
-            },
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader'
             }
         ]
     },
     resolve: {
-        modules: [path.resolve('./src'), path.resolve('./node_modules')],
-        extensions: ['.json', '.js', '.ts', '.tsx']
+        modules: [path.resolve('./src'), './node_modules'],
+        extensions: ['.json', '.js']
     },
     plugins: plugins,
     externals: {

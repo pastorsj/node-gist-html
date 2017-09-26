@@ -92,22 +92,7 @@ function convertGithubCode(body, url, filename) {
 
 export default function gistify(link) {
     if (isUrl(link)) {
-        if (link.includes('github.com')) {
-            // It is a github link
-            return new Promise((resolve, reject) => {
-                const url = link;
-                const filename = url.split('/').pop();
-
-                request(url, (err, resp, body) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    convertGithubCode(body, url, filename)
-                        .then(result => resolve(result))
-                        .catch(err => reject(err));
-                });
-            });
-        } else if(link.includes('gist.github.com')) {
+        if(link.includes('gist.github.com')) {
             // It is a GIST url
             const id = link.split('/').slice(-1)[0];
 
@@ -126,6 +111,21 @@ export default function gistify(link) {
                     } else {
                         reject('Failed to load the gist');
                     }
+                });
+            });
+        } else if (link.includes('github.com')) {
+            // It is a github link
+            return new Promise((resolve, reject) => {
+                const url = link;
+                const filename = url.split('/').pop();
+
+                request(url, (err, resp, body) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    convertGithubCode(body, url, filename)
+                        .then(result => resolve(result))
+                        .catch(err => reject(err));
                 });
             });
         }

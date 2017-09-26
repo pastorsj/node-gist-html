@@ -1,14 +1,30 @@
 'use strict';
 
-const gistify = require('../lib/node-gist-html.min');
+const converter = require('./../lib/node-gist-html');
 const fs = require('fs');
 
-// gistify('dcb242de864e5d2b1c552783a7a00794')
+// converter('dcb242de864e5d2b1c552783a7a00794')
 //     .then((result) => {
 //         fs.writeFileSync('index.html', result.html);
 //     });
 
-gistify('https://github.com/staltz/react-native-node/blob/master/android/build.gradle')
+// converter('https://google.com')
+// .then((result) => {
+//     fs.writeFileSync('index.html', result.html);
+// })
+// .catch((err) => {
+//     console.error(err);
+// });
+
+converter('https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794')
     .then((result) => {
         fs.writeFileSync('index.html', result.html);
+    })
+    .catch((err) => {
+        console.error(err);
     });
+
+// converter('https://github.com/staltz/react-native-node/blob/master/android/build.gradle')
+//     .then((result) => {
+//         fs.writeFileSync('index.html', result.html);
+//     });
