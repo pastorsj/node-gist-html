@@ -46,14 +46,15 @@ const config = {
         ]
     },
     resolve: {
-        modules: [path.resolve('./src')],
+        modules: [path.resolve('./src'), path.resolve('./node_modules')],
         extensions: ['.json', '.js', '.ts', '.tsx']
     },
     plugins: plugins,
     externals: {
         request: 'request',
         cheerio: 'cheerio',
-        'html-minifier': 'html-minifier'
+        'html-minifier': 'html-minifier',
+        'is-url': 'is-url'
     }
 };
 

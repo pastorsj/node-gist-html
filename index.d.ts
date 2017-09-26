@@ -8,4 +8,4 @@
  * @param type Either gist or github
  * @param link The link to the github file or gist link
  */
-export default function gistify(type: string, link: string): Promise<string>;
+export default function gistify(link: string): Promise<string>;
