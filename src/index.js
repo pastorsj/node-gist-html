@@ -7,41 +7,45 @@ import isUrl from 'is-url';
 
 function retrieveGist(response) {
     return new Promise((resolve, reject) => {
-        // the html payload is in the div property
-        if (response && response.div) {
-        // github returns /assets/embed-id.css now, but let's be sure about that
-            if (response.stylesheet) {
-                // github passes down html instead of a url for the stylehsheet now
-                // parse off the href
-                if (response.stylesheet.indexOf('<link') === 0) {
-                    response.stylesheet =
-                        response.stylesheet
-                        .replace(/\\/g, '')
-                        .match(/href=\"([^\s]*)\"/)[1];
-                } else if (response.stylesheet.indexOf('http') !== 0) {
-                // add leading slash if missing
-                    if (response.stylesheet.indexOf('/') !== 0) {
-                        response.stylesheet = '/' + response.stylesheet;
+        try {
+            // the html payload is in the div property
+            if (response && response.div) {
+            // github returns /assets/embed-id.css now, but let's be sure about that
+                if (response.stylesheet) {
+                    // github passes down html instead of a url for the stylehsheet now
+                    // parse off the href
+                    if (response.stylesheet.indexOf('<link') === 0) {
+                        response.stylesheet =
+                            response.stylesheet
+                            .replace(/\\/g, '')
+                            .match(/href=\"([^\s]*)\"/)[1];
+                    } else if (response.stylesheet.indexOf('http') !== 0) {
+                    // add leading slash if missing
+                        if (response.stylesheet.indexOf('/') !== 0) {
+                            response.stylesheet = '/' + response.stylesheet;
+                        }
+                        response.stylesheet = 'https://gist.github.com' + response.stylesheet;
                     }
-                    response.stylesheet = 'https://gist.github.com' + response.stylesheet;
                 }
+
+                const stylesheet = `<link rel=stylesheet type=text/css href=${response.stylesheet}>`;
+
+                resolve({
+                    html: minify(stylesheet + '\n' + response.div, {
+                        conservativeCollapse: true
+                    }),
+                    file: minify(response.div, {
+                        conservativeCollapse: true
+                    }),
+                    stylesheet: minify(stylesheet, {
+                        conservativeCollapse: true
+                    })
+                });
+            } else {
+                reject('Failed to load gist');
             }
-
-            const stylesheet = `<link rel=stylesheet type=text/css href=${response.stylesheet}>`;
-
-            resolve({
-                html: minify(stylesheet + '\n' + response.div, {
-                    conservativeCollapse: true
-                }),
-                file: minify(response.div, {
-                    conservativeCollapse: true
-                }),
-                stylesheet: minify(stylesheet, {
-                    conservativeCollapse: true
-                })
-            });
-        } else {
-            reject('Failed loading gist');
+        } catch (e) {
+            reject('Failed to load gist');
         }
     });
 }
@@ -85,71 +89,81 @@ function convertGithubCode(body, url, filename) {
                 })
             });
         } catch(e) {
-            reject(e);
+            reject('Failed to load github file. Please check the url');
         }
     });
 }
 
 export default function gistify(link) {
-    if (isUrl(link)) {
-        if(link.includes('gist.github.com')) {
-            // It is a GIST url
-            const id = link.split('/').slice(-1)[0];
+    try {
+        if (isUrl(link)) {
+            if(link.includes('gist.github.com')) {
+                // It is a GIST url
+                const id = link.split('/').slice(-1)[0];
 
-            return new Promise((resolve, reject) => {
+                return new Promise((resolve, reject) => {
+                    // It is a github link
+                    const url = 'https://gist.github.com/' + id + '.json';
+
+                    request(url, (err, resp, body) => {
+                        if (err) {
+                            reject('An error has occured', err);
+                        }
+                        if (body) {
+                            retrieveGist(JSON.parse(body))
+                                .then((response) => resolve(response))
+                                .catch((err) => reject(err));
+                        } else {
+                            reject('Failed to load the gist');
+                        }
+                    });
+                });
+            } else if (link.includes('github.com')) {
                 // It is a github link
-                const url = 'https://gist.github.com/' + id + '.json';
+                return new Promise((resolve, reject) => {
+                    const url = link;
+                    const filename = url.split('/').pop();
 
-                request(url, (err, resp, body) => {
-                    if (err) {
-                        reject('An error has occured', err);
-                    }
-                    if (body) {
-                        retrieveGist(JSON.parse(body))
+                    request(url, (err, resp, body) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        convertGithubCode(body, url, filename)
+                            .then(result => resolve(result))
+                            .catch(err => reject(err));
+                    });
+                });
+            }
+            // eslint-disable-next-line
+            return Promise.reject('Invalid url! It needs to either be a url of type "github.com" or "gist.github.com" or you need to pass the id of the GIST');
+        }
+        return new Promise((resolve, reject) => {
+            // It is a gist id
+            const id = link;
+            const url = 'https://gist.github.com/' + id + '.json';
+
+            request(url, (err, resp, body) => {
+                if (err) {
+                    reject('An error has occured', err);
+                }
+                if (body) {
+                    try {
+                        const parsedBody = JSON.parse(body);
+
+                        retrieveGist(parsedBody)
                             .then((response) => resolve(response))
                             .catch((err) => reject(err));
-                    } else {
-                        reject('Failed to load the gist');
+                    } catch (e) {
+                        // eslint-disable-next-line
+                        reject('Failed to load the gist. We assume that you are sending an ID for the Gist you want to load. If you want to send a url, make sure that it is of type "github.com" or "gist.github.com"'); 
                     }
-                });
+                } else {
+                    // eslint-disable-next-line
+                    reject('Failed to load the gist. We assume that you are sending an ID for the Gist you want to load. If you want to send a url, make sure that it is of type "github.com" or "gist.github.com"');
+                }
             });
-        } else if (link.includes('github.com')) {
-            // It is a github link
-            return new Promise((resolve, reject) => {
-                const url = link;
-                const filename = url.split('/').pop();
-
-                request(url, (err, resp, body) => {
-                    if (err) {
-                        reject(err);
-                    }
-                    convertGithubCode(body, url, filename)
-                        .then(result => resolve(result))
-                        .catch(err => reject(err));
-                });
-            });
-        }
-        return Promise.reject(`Invalid url! It needs to either be a url of type "github.com" 
-        or "gist.github.com" or you need to pass the id of the GIST`);
-    }
-    return new Promise((resolve, reject) => {
-        // It is a gist id
-        const id = link;
-        const url = 'https://gist.github.com/' + id + '.json';
-
-        request(url, (err, resp, body) => {
-            if (err) {
-                reject('An error has occured', err);
-            }
-            if (body) {
-                retrieveGist(JSON.parse(body))
-                    .then((response) => resolve(response))
-                    .catch((err) => reject(err));
-            } else {
-                reject(`Failed to load the gist. We assume that you are sending an ID for 
-                the Gist you want to load. If you want to send a url, make sure that it 
-                is of type "github.com" or "gist.github.com"`);
-            }
         });
-    });
+    } catch (e) {
+        return Promise.reject('An error has occured', e);
+    }
 }
