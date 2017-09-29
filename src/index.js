@@ -59,6 +59,7 @@ function convertGithubCode(body, url, filename) {
 
             rawURL = 'https://raw.githubusercontent.com' + rawURL.replace('/raw', '');;
             $('.file-header').remove();
+            $('.BlobToolbar').remove();
             let file = $('.file').html();
 
             $('link[rel=stylesheet]').each(function (index, element) {
