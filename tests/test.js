@@ -19,7 +19,7 @@ const fs = require('fs');
 //         console.error(err);
 //     });
 
-// converter('https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794')
+// converter('https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794#file-test-js-L1-L2')
 //     .then((result) => {
 //         fs.writeFileSync('index.html', result.html);
 //     })
@@ -27,13 +27,21 @@ const fs = require('fs');
 //         console.error(err);
 //     });
 
-converter('https://github.com/staltz/react-native-node/blob/master/android/build.gradle')
+converter('https://github.com/pastorsj/blog-api/blob/master/index.html#L15-L22')
     .then((result) => {
         fs.writeFileSync('index.html', result.html);
     })
     .catch((err) => {
         console.error(err);
     });
+
+// converter('https://github.com/staltz/react-native-node/blob/master/android/build.gradle')
+//     .then((result) => {
+//         fs.writeFileSync('index.html', result.html);
+//     })
+//     .catch((err) => {
+//         console.error(err);
+//     });
 
 // converter('fs;kladjfoj349jf;')
 //     .then((result) => {
