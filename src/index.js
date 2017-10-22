@@ -1,104 +1,54 @@
 'use strict';
 
 import request from 'request';
-import cheerio from 'cheerio';
-import { minify } from 'html-minifier';
 import isUrl from 'is-url';
+import retrieveGist from './converters/gist';
+import convertGithubCode from './converters/github';
 
-function retrieveGist(response) {
-    return new Promise((resolve, reject) => {
-        try {
-            // the html payload is in the div property
-            if (response && response.div) {
-            // github returns /assets/embed-id.css now, but let's be sure about that
-                if (response.stylesheet) {
-                    // github passes down html instead of a url for the stylehsheet now
-                    // parse off the href
-                    if (response.stylesheet.indexOf('<link') === 0) {
-                        response.stylesheet =
-                            response.stylesheet
-                            .replace(/\\/g, '')
-                            .match(/href=\"([^\s]*)\"/)[1];
-                    } else if (response.stylesheet.indexOf('http') !== 0) {
-                    // add leading slash if missing
-                        if (response.stylesheet.indexOf('/') !== 0) {
-                            response.stylesheet = '/' + response.stylesheet;
-                        }
-                        response.stylesheet = 'https://gist.github.com' + response.stylesheet;
-                    }
-                }
+// https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794#file-test-js-L1-L3
+// https://github.com/pastorsj/blog-api/blob/master/index.html#L15-L22
+function hasLineNumbers(link) {
+    const lineNumbers = link.split('#').slice(-1)[0];
 
-                const stylesheet = `<link rel=stylesheet type=text/css href=${response.stylesheet}>`;
+    if (lineNumbers) {
+        const linesExtractor = /L\d+-L\d+/g;
+        const lines = lineNumbers.match(linesExtractor);
 
-                resolve({
-                    html: minify(stylesheet + '\n' + response.div, {
-                        conservativeCollapse: true
-                    }),
-                    file: minify(response.div, {
-                        conservativeCollapse: true
-                    }),
-                    stylesheet: minify(stylesheet, {
-                        conservativeCollapse: true
-                    })
-                });
-            } else {
-                reject('Failed to load gist');
+        if (lines.length > 0) {
+            const lineExtractor = /L\d+/g;
+            const lineRange = lines[0];
+            const gistName = lineNumbers.substring(0, lineNumbers.length - lineRange.length);
+            const lineArray = lineRange.match(lineExtractor);
+
+            if (lineArray.length === 2) {
+                const startLine = lineArray[0].slice(1);
+                const endLine = lineArray[1].slice(1);
+
+                return {
+                    startLine: parseInt(startLine, 10),
+                    endLine: parseInt(endLine, 10),
+                    gistName
+                };
             }
-        } catch (e) {
-            reject('Failed to load gist');
         }
-    });
+    }
+    return false;
 }
 
-function convertGithubCode(body, url, filename) {
-    return new Promise((resolve, reject) => {
-        try {
-            const $ = cheerio.load(body);
-            let styles = '';
-            let rawURL = $('#raw-url').attr('href');
-
-            rawURL = 'https://raw.githubusercontent.com' + rawURL.replace('/raw', '');;
-            $('.file-header').remove();
-            $('.BlobToolbar').remove();
-            let file = $('.file').html();
-
-            $('link[rel=stylesheet]').each(function (index, element) {
-                const href = $(this).attr('href');
-
-                if (href.indexOf('frameworks-') === -1) {
-                    styles += $.html(this);
-                }
-            });
-            styles = styles + '<link rel=stylesheet type=text/css href=https://assets-cdn.github.com/assets/gist-embed-40aceec172c5b3cf62f5333920ddab3a7342a1d12dfdd1581f49f0f35fc0de4a.css>'; // eslint-disable-line
-
-            let meta = `<div class="gist-meta">
-                <a href="${rawURL}" style="float:right">view raw</a>
-                <a href="${url}">${filename}</a> hosted with &#10084; by <a href="https://github.com">GitHub</a>
-            </div>`;
-
-            file = `<div class="gist"><div class="file">${file}${meta}</div></div>`;
-
-            resolve({
-                styles: minify(styles, {
-                    conservativeCollapse: true
-                }),
-                file: minify(file, {
-                    conservativeCollapse: true
-                }),
-                html: minify(styles + file, {
-                    conservativeCollapse: true
-                })
-            });
-        } catch(e) {
-            reject('Failed to load github file. Please check the url');
-        }
-    });
+function stripLineNumbers(link) {
+    return link.split('#')[0];
 }
 
-export default function gistify(link) {
+function gistify(link, options = {}) {
     try {
         if (isUrl(link)) {
             if(link.includes('gist.github.com')) {
+                const lineNumbers = hasLineNumbers(link);
+
+                if (lineNumbers) {
+                    options.lineNumbers = lineNumbers;
+                    link = stripLineNumbers(link);
+                }
                 // It is a GIST url
                 const id = link.split('/').slice(-1)[0];
 
@@ -111,7 +61,7 @@ export default function gistify(link) {
                             reject('An error has occured', err);
                         }
                         if (body) {
-                            retrieveGist(JSON.parse(body))
+                            retrieveGist(JSON.parse(body), options)
                                 .then((response) => resolve(response))
                                 .catch((err) => reject(err));
                         } else {
@@ -120,6 +70,12 @@ export default function gistify(link) {
                     });
                 });
             } else if (link.includes('github.com')) {
+                const lineNumbers = hasLineNumbers(link);
+
+                if (lineNumbers) {
+                    options.lineNumbers = lineNumbers;
+                    link = stripLineNumbers(link);
+                }
                 // It is a github link
                 return new Promise((resolve, reject) => {
                     const url = link;
@@ -129,7 +85,7 @@ export default function gistify(link) {
                         if (err) {
                             reject(err);
                         }
-                        convertGithubCode(body, url, filename)
+                        convertGithubCode(body, url, filename, options)
                             .then(result => resolve(result))
                             .catch(err => reject(err));
                     });
@@ -151,7 +107,7 @@ export default function gistify(link) {
                     try {
                         const parsedBody = JSON.parse(body);
 
-                        retrieveGist(parsedBody)
+                        retrieveGist(parsedBody, options)
                             .then((response) => resolve(response))
                             .catch((err) => reject(err));
                     } catch (e) {
@@ -168,3 +124,5 @@ export default function gistify(link) {
         return Promise.reject('An error has occured', e);
     }
 }
+
+export default gistify;
