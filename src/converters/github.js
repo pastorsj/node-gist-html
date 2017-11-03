@@ -16,8 +16,7 @@ function removeLines($, lineNumbers) {
         const line = $(`#L${i}`).get();
 
         if (line.length > 0) {
-            $(`#L${i}`).remove();
-            $(`#LC${i}`).remove();
+            $(`#L${i}`).parent().remove();
         } else {
             break;
         }
