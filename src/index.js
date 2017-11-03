@@ -5,17 +5,17 @@ import isUrl from 'is-url';
 import retrieveGist from './converters/gist';
 import convertGithubCode from './converters/github';
 
+const lineTester = /L\d+-L\d+/g;
+const lineExtractor = /L\d+/g;
+
 // https://gist.github.com/pastorsj/dcb242de864e5d2b1c552783a7a00794#file-test-js-L1-L3
 // https://github.com/pastorsj/blog-api/blob/master/index.html#L15-L22
 function hasLineNumbers(link) {
-    const lineNumbers = link.split('#').slice(-1)[0];
-
-    if (lineNumbers) {
-        const linesExtractor = /L\d+-L\d+/g;
-        const lines = lineNumbers.match(linesExtractor);
+    if (lineTester.test(link)) {
+        const lineNumbers = link.split('#').slice(-1)[0];
+        const lines = lineNumbers.match(lineTester);
 
         if (lines.length > 0) {
-            const lineExtractor = /L\d+/g;
             const lineRange = lines[0];
             const gistName = lineNumbers.substring(0, lineNumbers.length - lineRange.length);
             const lineArray = lineRange.match(lineExtractor);
@@ -121,7 +121,7 @@ function gistify(link, options = {}) {
             });
         });
     } catch (e) {
-        return Promise.reject('An error has occured', e);
+        return Promise.reject(e);
     }
 }
 
