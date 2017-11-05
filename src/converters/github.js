@@ -1,5 +1,3 @@
-'use strict';
-
 import { minify } from 'html-minifier';
 import cheerio from 'cheerio';
 
@@ -30,7 +28,7 @@ function convertGithubCode(body, url, filename, options) {
             let styles = '';
             let rawURL = $('#raw-url').attr('href');
 
-            rawURL = 'https://raw.githubusercontent.com' + rawURL.replace('/raw', '');
+            rawURL = `https://raw.githubusercontent.com${rawURL.replace('/raw', '')}`;
 
             $('.file-header').remove();
             $('.BlobToolbar').remove();
@@ -56,7 +54,7 @@ function convertGithubCode(body, url, filename, options) {
             if (options.removeFooter) {
                 file = `<div class="gist"><div class="file">${file}</div></div>`;
             } else {
-                let meta = `
+                const meta = `
                 <div class="gist-meta">
                     <a href="${rawURL}" style="float:right">view raw</a>
                     <a href="${url}">${filename}</a> hosted with &#10084; by <a href="https://github.com">GitHub</a>
@@ -76,7 +74,7 @@ function convertGithubCode(body, url, filename, options) {
                     conservativeCollapse: true
                 })
             });
-        } catch(e) {
+        } catch (e) {
             reject('Failed to load github file. Please check the url');
         }
     });

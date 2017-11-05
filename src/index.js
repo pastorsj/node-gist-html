@@ -1,5 +1,3 @@
-'use strict';
-
 import request from 'request';
 import isUrl from 'is-url';
 import retrieveGist from './converters/gist';
@@ -42,7 +40,7 @@ function stripLineNumbers(link) {
 function gistify(link, options = {}) {
     try {
         if (isUrl(link)) {
-            if(link.includes('gist.github.com')) {
+            if (link.includes('gist.github.com')) {
                 const lineNumbers = hasLineNumbers(link);
 
                 if (lineNumbers) {
@@ -54,7 +52,7 @@ function gistify(link, options = {}) {
 
                 return new Promise((resolve, reject) => {
                     // It is a github link
-                    const url = 'https://gist.github.com/' + id + '.json';
+                    const url = `https://gist.github.com/${id}.json`;
 
                     request(url, (err, resp, body) => {
                         if (err) {
@@ -62,8 +60,8 @@ function gistify(link, options = {}) {
                         }
                         if (body) {
                             retrieveGist(JSON.parse(body), options)
-                                .then((response) => resolve(response))
-                                .catch((err) => reject(err));
+                                .then(response => resolve(response))
+                                .catch(err => reject(err));
                         } else {
                             reject('Failed to load the gist');
                         }
@@ -97,7 +95,7 @@ function gistify(link, options = {}) {
         return new Promise((resolve, reject) => {
             // It is a gist id
             const id = link;
-            const url = 'https://gist.github.com/' + id + '.json';
+            const url = `https://gist.github.com/${id}.json`;
 
             request(url, (err, resp, body) => {
                 if (err) {
@@ -108,8 +106,8 @@ function gistify(link, options = {}) {
                         const parsedBody = JSON.parse(body);
 
                         retrieveGist(parsedBody, options)
-                            .then((response) => resolve(response))
-                            .catch((err) => reject(err));
+                            .then(response => resolve(response))
+                            .catch(err => reject(err));
                     } catch (e) {
                         // eslint-disable-next-line
                         reject('Failed to load the gist. We assume that you are sending an ID for the Gist you want to load. If you want to send a url, make sure that it is of type "github.com" or "gist.github.com"'); 
