@@ -9,8 +9,8 @@
     "dev": "webpack --progress --colors --watch --env dev",
     "lint": "eslint src/* test/*",
     "autofix": "eslint --fix src/* test/*",
-    "test": "mocha --compilers js:babel-core/register --colors --timeout 5000 ./tests/**/*.test.js",
-    "test:watch": "mocha --compilers js:babel-core/register --colors --timeout 5000 -w ./tests/**/*.test.js"
+    "test": "mocha --no-timeouts --require babel-register --colors --timeout 5000 ./tests/**/*.test.js",
+    "test:watch": "mocha --no-timeouts --require babel-register --colors --timeout 5000 -w ./tests/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -42,15 +42,14 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
-    "chai": "^4.1.2",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
+    "pixelmatch": "^4.0.2",
+    "pngjs": "^3.3.0",
     "selenium-webdriver": "^3.6.0",
-    "sinon": "^4.1.1",
-    "sinon-chai": "^2.14.0",
     "webpack": "^3.6.0",
     "yargs": "6.6.0"
   }

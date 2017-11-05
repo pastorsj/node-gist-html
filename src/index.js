@@ -37,7 +37,7 @@ function stripLineNumbers(link) {
     return link.split('#')[0];
 }
 
-function gistify(link, options = {}) {
+export function gistify(link, options = {}) {
     try {
         if (isUrl(link)) {
             if (link.includes('gist.github.com')) {
@@ -122,5 +122,3 @@ function gistify(link, options = {}) {
         return Promise.reject(e);
     }
 }
-
-export default gistify;

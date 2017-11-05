@@ -27,7 +27,7 @@ const fs = require('fs');
 //         console.error(err);
 //     });
 
-converter('https://github.com/pastorsj/blog-api/blob/master/index.html#L15-L22')
+converter.gistify('https://github.com/pastorsj/blog-api/blob/master/index.html#L15-L22')
     .then((result) => {
         fs.writeFileSync('index.html', result.html);
     })
