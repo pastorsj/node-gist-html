@@ -149,7 +149,7 @@ describe('Github Snapshot Testing', () => {
                 .catch(err => done(err));
         });
     });
-    describe.only('Github: Selected Lines', () => {
+    describe('Github: Selected Lines', () => {
         const file = 'github_selected_lines.png';
         before((done) => {
             retrieveScreenshot(done, selectedLinesUrl, HTML_FILE);
