@@ -5,7 +5,7 @@
 
 interface Options {
     removeLineNumbers: boolean;
-    removeFooter: footer;
+    removeFooter: boolean;
 }
 
 /**
@@ -13,4 +13,4 @@ interface Options {
  * @param type Either gist or github
  * @param link The link to the github file or gist link
  */
-export default function gistify(link: string, options?: Options): Promise<string>;
+export function gistify(link: string, options?: Options): Promise<string>;

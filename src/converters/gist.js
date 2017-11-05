@@ -1,5 +1,3 @@
-'use strict';
-
 import { minify } from 'html-minifier';
 import cheerio from 'cheerio';
 
@@ -28,20 +26,18 @@ function retrieveGist(response, options) {
     return new Promise((resolve, reject) => {
         try {
             if (response && response.div) {
-
                 if (response.stylesheet) {
-
                     if (response.stylesheet.indexOf('<link') === 0) {
                         response.stylesheet =
                             response.stylesheet
-                            .replace(/\\/g, '')
-                            .match(/href=\"([^\s]*)\"/)[1];
+                                .replace(/\\/g, '')
+                                .match(/href=\"([^\s]*)\"/)[1];
                     } else if (response.stylesheet.indexOf('http') !== 0) {
                     // add leading slash if missing
                         if (response.stylesheet.indexOf('/') !== 0) {
-                            response.stylesheet = '/' + response.stylesheet;
+                            response.stylesheet = `/${response.stylesheet}`;
                         }
-                        response.stylesheet = 'https://gist.github.com' + response.stylesheet;
+                        response.stylesheet = `https://gist.github.com${response.stylesheet}`;
                     }
                 }
 
@@ -62,7 +58,7 @@ function retrieveGist(response, options) {
                 const stylesheet = `<link rel=stylesheet type=text/css href=${response.stylesheet}>`;
 
                 resolve({
-                    html: minify(stylesheet + '\n' + file, {
+                    html: minify(`${stylesheet}\n${file}`, {
                         conservativeCollapse: true
                     }),
                     file: minify(file, {

@@ -62,3 +62,5 @@ tests/index.html
 
 index.html
 .vscode
+tests/screenshots/output/
+tests/screenshots/diff/
