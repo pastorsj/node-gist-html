@@ -8,6 +8,7 @@ const OUTPUT_DIRECTORY = path.join(__dirname, 'output');
 const REFERENCE_DIRECTORY = path.join(__dirname, 'reference');
 const DIFF_DIRECTORY = path.join(__dirname, 'diff');
 const url = 'https://github.com/pastorsj/pandora-clone/blob/master/AudioStreaming/src/main/java/pandora/clone/AudioStreamingApplication.java';
+const selectedLinesUrl = 'https://github.com/pastorsj/pandora-clone/blob/master/AudioStreaming/src/main/java/pandora/clone/AudioStreamingApplication.java#L8-L14';
 
 describe('Github Snapshot Testing', () => {
     afterEach((done) => {
@@ -148,10 +149,10 @@ describe('Github Snapshot Testing', () => {
                 .catch(err => done(err));
         });
     });
-    describe('Github: Selected Lines', () => {
+    describe.only('Github: Selected Lines', () => {
         const file = 'github_selected_lines.png';
         before((done) => {
-            retrieveScreenshot(done, url.concat('#L8-L14'), HTML_FILE);
+            retrieveScreenshot(done, selectedLinesUrl, HTML_FILE);
         });
         it('should return html that is formatted correctly', (done) => {
             const driver = new webdriver.Builder()
