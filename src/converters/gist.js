@@ -4,7 +4,7 @@ import cheerio from 'cheerio';
 function removeLines($, lineNumbers) {
     const start = lineNumbers.startLine;
     const end = lineNumbers.endLine;
-    const gistName = lineNumbers.gistName;
+    const { gistName } = lineNumbers;
     let i = 0;
 
     while (true) {
@@ -28,10 +28,9 @@ function retrieveGist(response, options) {
             if (response && response.div) {
                 if (response.stylesheet) {
                     if (response.stylesheet.indexOf('<link') === 0) {
-                        response.stylesheet =
-                            response.stylesheet
-                                .replace(/\\/g, '')
-                                .match(/href=\"([^\s]*)\"/)[1];
+                        response.stylesheet = response.stylesheet
+                            .replace(/\\/g, '')
+                            .match(/href=\"([^\s]*)\"/)[1];
                     } else if (response.stylesheet.indexOf('http') !== 0) {
                     // add leading slash if missing
                         if (response.stylesheet.indexOf('/') !== 0) {
@@ -58,10 +57,10 @@ function retrieveGist(response, options) {
                 const stylesheet = `<link rel=stylesheet type=text/css href=${response.stylesheet}>`;
 
                 resolve({
-                    html: minify(`${stylesheet}\n${file}`, {
+                    html: minify(`<div contenteditable="false">${stylesheet}\n${file}</div><br/>`, {
                         conservativeCollapse: true
                     }),
-                    file: minify(file, {
+                    file: minify(`<div contenteditable="false">${file}</div><br/>`, {
                         conservativeCollapse: true
                     }),
                     stylesheet: minify(stylesheet, {
@@ -69,10 +68,10 @@ function retrieveGist(response, options) {
                     })
                 });
             } else {
-                reject('Failed to load gist');
+                reject(new Error('Failed to load gist'));
             }
         } catch (e) {
-            reject('Failed to load gist');
+            reject(new Error('Failed to load gist'));
         }
     });
 }

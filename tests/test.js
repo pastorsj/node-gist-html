@@ -1,5 +1,3 @@
-'use strict';
-
 const converter = require('./../lib/node-gist-html');
 const fs = require('fs');
 
@@ -27,7 +25,7 @@ const fs = require('fs');
 //         console.error(err);
 //     });
 
-converter.gistify('https://github.com/pastorsj/blog-api/blob/master/index.html#L15-L22')
+converter.gistify('https://github.com/pastorsj/blog-api/blob/master/docs/index.html#L2-L18')
     .then((result) => {
         fs.writeFileSync('index.html', result.html);
     })

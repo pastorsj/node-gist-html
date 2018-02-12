@@ -44,7 +44,6 @@ function convertGithubCode(body, url, filename, options) {
 
             $('link[rel=stylesheet]').each(function (index, element) {
                 const href = $(this).attr('href');
-
                 if (href.indexOf('frameworks-') === -1) {
                     styles += $.html(this);
                 }
@@ -67,15 +66,15 @@ function convertGithubCode(body, url, filename, options) {
                 styles: minify(styles, {
                     conservativeCollapse: true
                 }),
-                file: minify(file, {
+                file: minify(`<div contenteditable="false">${file}</div><br/>`, {
                     conservativeCollapse: true
                 }),
-                html: minify(styles + file, {
+                html: minify(`<div contenteditable="false">${styles}\n${file}</div><br/>`, {
                     conservativeCollapse: true
                 })
             });
         } catch (e) {
-            reject('Failed to load github file. Please check the url');
+            reject(new Error('Failed to load github file. Please check the url'));
         }
     });
 }
