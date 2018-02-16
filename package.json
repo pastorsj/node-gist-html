@@ -1,6 +1,6 @@
 {
   "name": "node-gist-html",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A simple library to convert gist code and GitHub files into gist-like html",
   "main": "./lib/node-gist-html.min.js",
   "types": "./index.d.ts",
@@ -46,7 +46,6 @@
     "babel-preset-env": "^1.6.0",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.8.0",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^4.0.1",
