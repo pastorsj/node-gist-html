@@ -21,6 +21,17 @@ function removeLines($, lineNumbers) {
     }
 }
 
+function formatCode($) {
+    // eslint-disable-next-line
+    $('td.blob-code').each(function(index, element) {
+        const outer = $.html(this);
+        const inner = $(this).html();
+        const replacement = `<pre><code>${$(this).html()}</code></pre>`;
+        const replaced = outer.replace(inner, replacement);
+        $(this).replaceWith($(replaced));
+    });
+}
+
 function convertGithubCode(body, url, filename, options) {
     return new Promise((resolve, reject) => {
         try {
@@ -40,8 +51,10 @@ function convertGithubCode(body, url, filename, options) {
                 removeLines($, options.lineNumbers);
             }
 
+            formatCode($);
             let file = $('.file').html();
 
+            // eslint-disable-next-line
             $('link[rel=stylesheet]').each(function (index, element) {
                 const href = $(this).attr('href');
                 if (href.indexOf('frameworks-') === -1) {

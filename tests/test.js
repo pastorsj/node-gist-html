@@ -25,7 +25,7 @@ const fs = require('fs');
 //         console.error(err);
 //     });
 
-converter.gistify('https://github.com/pastorsj/blog-api/blob/master/docs/index.html#L2-L18')
+converter.gistify('https://github.com/LighthouseBlog/Blog/blob/master/src/app/_interceptors/response.interceptor.ts')
     .then((result) => {
         fs.writeFileSync('index.html', result.html);
     })

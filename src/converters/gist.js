@@ -22,12 +22,24 @@ function removeLines($, lineNumbers) {
     }
 }
 
+function formatCode($) {
+    // eslint-disable-next-line
+    $('td.blob-code').each(function(index, element) {
+        const outer = $.html(this);
+        const inner = $(this).html();
+        const replacement = `<pre><code>${$(this).html()}</code></pre>`;
+        const replaced = outer.replace(inner, replacement);
+        $(this).replaceWith($(replaced));
+    });
+}
+
 function retrieveGist(response, options) {
     return new Promise((resolve, reject) => {
         try {
             if (response && response.div) {
                 if (response.stylesheet) {
                     if (response.stylesheet.indexOf('<link') === 0) {
+                        // eslint-disable-next-line
                         response.stylesheet = response.stylesheet
                             .replace(/\\/g, '')
                             .match(/href=\"([^\s]*)\"/)[1];
@@ -51,6 +63,7 @@ function retrieveGist(response, options) {
                 if (options.lineNumbers) {
                     removeLines($, options.lineNumbers);
                 }
+                formatCode($);
 
                 const file = $.html();
 
