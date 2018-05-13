@@ -1,27 +1,27 @@
-'use strict';
 /* global __dirname, require, module */
 
-const webpack = require('webpack');
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
-const env = require('yargs').argv.env; // use --env with webpack 2
+const env = require('yargs').argv.env; // eslint-disable-line
 
-let libraryName = 'node-gist-html';
+const libraryName = 'node-gist-html';
 
-let plugins = [], outputFile;
+let outputFile;
 
 if (env === 'build') {
-    plugins.push(new UglifyJsPlugin({ minimize: true }));
-    outputFile = libraryName + '.min.js';
+    outputFile = `${libraryName}.min.js`;
 } else {
-    outputFile = libraryName + '.js';
+    outputFile = `${libraryName}.js`;
 }
 
 const config = {
-    entry: __dirname + '/src/index.js',
+    entry: path.join(__dirname, 'src', 'index.js'),
     devtool: 'source-map',
+    target: 'node',
+    node: {
+        __dirname: true
+    },
     output: {
-        path: __dirname + '/lib',
+        path: path.join(__dirname, 'lib'),
         filename: outputFile,
         library: libraryName,
         libraryTarget: 'umd',
@@ -30,17 +30,21 @@ const config = {
     module: {
         rules: [
             {
-                test: /(\.jsx|\.js)$/,
+                test: /(\.js)$/,
                 loader: 'babel-loader',
-                exclude: /(node_modules|bower_components)/
+                exclude: /node_modules/
             }
         ]
     },
     resolve: {
-        modules: [path.resolve('./src'), './node_modules'],
-        extensions: ['.json', '.js']
+        modules: [
+            path.join(__dirname, 'src'),
+            path.join(__dirname, 'node_modules')
+        ],
+        extensions: [
+            '.js', '.json'
+        ]
     },
-    plugins: plugins,
     externals: {
         request: 'request',
         cheerio: 'cheerio',
